@@ -1,17 +1,14 @@
-import React from 'react';
-import ChatProvider from './context/chat-context';
-import DrawerNavigator from './component/drawer-navigation'; 
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from "react";
+import ChatProvider from "./context/chat-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import AppNavigator from "./component/app-navigator";
 
 const App = () => {
   return (
     <SafeAreaProvider>
-      
-        <ChatProvider>
-          <DrawerNavigator />
-          
-        </ChatProvider>
-     
+      <ChatProvider>
+        <AppNavigator />
+      </ChatProvider>
     </SafeAreaProvider>
   );
 };

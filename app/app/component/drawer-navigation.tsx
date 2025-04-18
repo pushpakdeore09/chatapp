@@ -4,14 +4,13 @@ import ProfileScreen from "../screens/profile-screen";
 import SettingsScreen from "../screens/settings-screen";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import ChatTabNavigator from "./tab-navigation";
 
 export type DrawerParamList = {
   ChatScreen: undefined;
   Profile: undefined;
   Settings: undefined;
-  
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -21,7 +20,13 @@ const CustomDrawerContent = (props: any) => {
     <>
       <DrawerContentScrollView {...props} className="bg-white">
         {/* Drawer Header */}
-        <View className="flex-row items-center px-4 py-6 bg-blue-500 rounded-2xl">
+        <View className="flex-row items-center justify-cente h-24 ml-4">
+          <Text className="text-2xl font-bold text-center py-4">Chatrr</Text>
+        </View>
+        <Pressable
+          onPress={() => props.navigation.navigate("Profile")}
+          className="flex-row items-center px-4 py-6 bg-blue-500 rounded-2xl mb-4"
+        >
           <Image
             source={{ uri: "https://randomuser.me/api/portraits/women/10.jpg" }}
             className="w-16 h-16 rounded-full mb-2"
@@ -30,7 +35,7 @@ const CustomDrawerContent = (props: any) => {
             <Text className="text-lg font-bold text-white">John Doe</Text>
             <Text className="text-sm text-white">johndoe@example.com</Text>
           </View>
-        </View>
+        </Pressable>
 
         {/* Drawer Items */}
         <DrawerItem

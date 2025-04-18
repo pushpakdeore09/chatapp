@@ -11,7 +11,7 @@ import Animated, {
   FadeInLeft,
   FadeOutRight,
 } from "react-native-reanimated";
-import {useNavigation} from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
 import {
   MessageSquare,
   Users,
@@ -21,12 +21,11 @@ import {
 } from "lucide-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
-import { useRouter } from "expo-router";
 import * as Progress from "react-native-progress";
 
 const onboardingData = [
   {
-    title: "Welcome to PingPong",
+    title: "Welcome to Chatrr",
     description:
       "Connect with friends, family, and colleagues instantly through seamless messaging.",
     image:
@@ -57,14 +56,12 @@ type JwtPayload = {
 };
 
 export default function OnboardingScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
-  const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  // Check if the token is valid or expired
-  const checkToken = async (navigation: any) => {
+  const checkToken = async () => {
     setLoading(true);
     try {
       const token = await AsyncStorage.getItem("token");
@@ -72,37 +69,34 @@ export default function OnboardingScreen() {
         const decodedToken: JwtPayload = jwtDecode(token);
         const isExpired = decodedToken.exp * 1000 < Date.now();
         if (!isExpired) {
-          // Token is valid, navigate to the chat screen
-          router.replace("/screens/chat-screen"); // Use replace to avoid going back
+          navigation.replace("ChatScreen"); 
         } else {
-          // Token is expired, clear the token and navigate to SignIn screen
           await AsyncStorage.removeItem("token");
           await AsyncStorage.removeItem("user");
           navigation.replace("SignIn");
         }
       } else {
-        // No token found, navigate to SignIn screen
         navigation.replace("SignIn");
       }
     } catch (error) {
-      // In case of an error, clear the token and navigate to SignIn screen
       await AsyncStorage.removeItem("token");
       await AsyncStorage.removeItem("user");
       navigation.replace("SignIn");
     } finally {
-      setLoading(false); // Finish loading after token check
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    checkToken(navigation);
-  }, []); 
+    checkToken();
+  }, []);
+
   const handleNext = useCallback(() => {
     if (currentIndex < onboardingData.length - 1) {
       setDirection("forward");
       setCurrentIndex((prev) => prev + 1);
     } else {
-      navigation.navigate("SignIn" as never) 
+      navigation.replace("SignIn");
     }
   }, [currentIndex]);
 
@@ -114,16 +108,13 @@ export default function OnboardingScreen() {
   }, [currentIndex]);
 
   const handleSkip = useCallback(() => {
-    navigation.navigate("SignIn" as never); 
+    navigation.replace("SignIn");
   }, []);
-
-  
 
   const currentItem = onboardingData[currentIndex];
   const isLastSlide = currentIndex === onboardingData.length - 1;
   const isFirstSlide = currentIndex === 0;
 
-  
   return loading ? (
     <View className="flex-1 justify-center items-center bg-white">
       <Progress.Circle
@@ -144,7 +135,7 @@ export default function OnboardingScreen() {
       >
         <Text className="text-gray-600 font-medium text-xl">Skip</Text>
       </TouchableOpacity>
-  
+
       {/* App Logo */}
       <View className="mt-20 items-center">
         <Image
@@ -153,7 +144,7 @@ export default function OnboardingScreen() {
           resizeMode="contain"
         />
       </View>
-  
+
       {/* Onboarding Content */}
       <View className="flex-1 justify-center items-center px-5">
         <Animated.View
@@ -180,7 +171,7 @@ export default function OnboardingScreen() {
           </Text>
         </Animated.View>
       </View>
-  
+
       {/* Navigation Buttons */}
       <View className="px-5 pb-10">
         <View className="flex-row justify-center mb-5">
@@ -193,7 +184,7 @@ export default function OnboardingScreen() {
             />
           ))}
         </View>
-  
+
         <View className="flex-row space-x-4 gap-4">
           {!isFirstSlide && (
             <TouchableOpacity
@@ -206,7 +197,7 @@ export default function OnboardingScreen() {
               </Text>
             </TouchableOpacity>
           )}
-  
+
           <TouchableOpacity
             className="flex-1 flex-row justify-center h-12 rounded-full items-center shadow-lg bg-blue-600"
             onPress={handleNext}
@@ -220,5 +211,4 @@ export default function OnboardingScreen() {
       </View>
     </View>
   );
-  
 }
