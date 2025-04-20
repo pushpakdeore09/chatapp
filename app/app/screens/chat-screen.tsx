@@ -1,4 +1,3 @@
-// screens/ChatScreen.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -10,18 +9,20 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  Pressable,
 } from "react-native";
 import { useChat } from "../context/chat-context";
 import { Search } from "lucide-react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
-import CreateGroupChatScreen from "./create-group-chat-screen";
-
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types";
+type ChatScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Chat'>;
 const ChatScreen: React.FC = () => {
   const { filteredChats, setSearch } = useChat();
   const [searchActive, setSearchActive] = useState(false);
   const [inputText, setInputText] = useState("");
-  const navigation = useNavigation();
+  const navigation = useNavigation<ChatScreenNavigationProp>();
 
   const handleSearchPress = () => setSearchActive(true);
   const handleCancelSearch = () => {
@@ -48,6 +49,13 @@ const ChatScreen: React.FC = () => {
       </View>
     </TouchableOpacity>
   );
+
+  const handleChatClick = (chatId: string) => {
+    const selectedChat = filteredChats.find((chat) => chat.id === chatId);
+    if (selectedChat) {
+      navigation.navigate("Chat" ,{selectedChat} as never);
+    }
+  };
 
   return (
     <>
@@ -90,13 +98,35 @@ const ChatScreen: React.FC = () => {
         <FlatList
           data={filteredChats}
           keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          contentContainerStyle={
-            searchActive
-              ? { paddingBottom: 20, marginTop: 80 }
-              : { paddingBottom: 20 }
-          }
+          renderItem={({ item }) => (
+            <Pressable
+              onPress={() => handleChatClick(item.id)}
+              className="flex-row items-center px-4 py-4"
+            >
+              <Image
+                source={{ uri: item.avatar }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  marginRight: 12,
+                }}
+              />
+
+              <View>
+                <Text className="text-lg font-semibold text-gray-900">
+                  {item.user}
+                </Text>
+
+                <Text className="text-sm text-gray-500">
+                  {item.lastMessage}
+                </Text>
+              </View>
+            </Pressable>
+          )}
+          contentContainerStyle={{ paddingBottom: 20 }}
         />
+
         <View className="absolute bottom-12 right-8 z-30">
           <TouchableOpacity
             onPress={() => navigation.navigate("CreateGroupChat" as never)}

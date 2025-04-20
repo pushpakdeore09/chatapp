@@ -15,24 +15,36 @@ type ChatContextType = {
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
-const mockChats: Chat[] = [
+const mockChats = [
   {
     id: "1",
     user: "Alice",
     lastMessage: "Hey, how are you?",
     avatar: "https://randomuser.me/api/portraits/women/10.jpg",
+    messages: [
+      { sender: "Alice", text: "Hey, how are you?" },
+      { sender: "You", text: "I'm good, thanks!" },
+    ],
   },
   {
     id: "2",
     user: "Bob",
     lastMessage: "Let’s catch up later!",
     avatar: "https://randomuser.me/api/portraits/men/2.jpg",
+    messages: [
+      { sender: "Bob", text: "Let's catch up later!" },
+      { sender: "You", text: "Sure, talk soon!" },
+    ],
   },
   {
     id: "3",
     user: "Charlie",
     lastMessage: "What’s up?",
     avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+    messages: [
+      { sender: "Charlie", text: "What's up?" },
+      { sender: "You", text: "Not much, just relaxing." },
+    ],
   },
 ];
 

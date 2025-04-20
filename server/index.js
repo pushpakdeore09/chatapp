@@ -3,6 +3,7 @@ import 'dotenv/config';
 import {connect} from './db/db.js'
 import userRoutes from './routes/user.routes.js';
 import chatRoutes from './routes/chat.routes.js';
+import messageRoutes from './routes/message.routes.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/message', messageRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

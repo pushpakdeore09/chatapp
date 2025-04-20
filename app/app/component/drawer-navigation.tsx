@@ -8,7 +8,7 @@ import { View, Text, Image, Pressable } from "react-native";
 import ChatTabNavigator from "./tab-navigation";
 
 export type DrawerParamList = {
-  ChatScreen: undefined;
+  ChatTabNavigator: undefined;
   Profile: undefined;
   Settings: undefined;
 };
@@ -81,7 +81,7 @@ const DrawerNavigator = () => {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen
-        name="ChatScreen"
+        name="ChatTabNavigator"
         component={ChatTabNavigator}
         options={{ title: "Home" }}
       />
