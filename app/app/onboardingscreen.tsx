@@ -19,9 +19,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { jwtDecode } from "jwt-decode";
 import * as Progress from "react-native-progress";
+import { useChat } from "./context/chat-context";
 
 const onboardingData = [
   {
@@ -50,46 +49,15 @@ const onboardingData = [
   },
 ];
 
-type JwtPayload = {
-  exp: number;
-  iat?: number;
-};
 
 export default function OnboardingScreen() {
+  const {loading} = useChat();
   const navigation = useNavigation<any>();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
-  const [loading, setLoading] = useState(true);
+  
 
-  const checkToken = async () => {
-    setLoading(true);
-    try {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        const decodedToken: JwtPayload = jwtDecode(token);
-        const isExpired = decodedToken.exp * 1000 < Date.now();
-        if (!isExpired) {
-          navigation.replace("ChatScreen"); 
-        } else {
-          await AsyncStorage.removeItem("token");
-          await AsyncStorage.removeItem("user");
-          navigation.replace("SignIn");
-        }
-      } else {
-        navigation.replace("SignIn");
-      }
-    } catch (error) {
-      await AsyncStorage.removeItem("token");
-      await AsyncStorage.removeItem("user");
-      navigation.replace("SignIn");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkToken();
-  }, []);
+ 
 
   const handleNext = useCallback(() => {
     if (currentIndex < onboardingData.length - 1) {

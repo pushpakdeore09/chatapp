@@ -51,6 +51,7 @@ const ChatScreen: React.FC = () => {
   );
 
   const handleChatClick = (chatId: string) => {
+    
     const selectedChat = filteredChats.find((chat) => chat.id === chatId);
     if (selectedChat) {
       navigation.navigate("Chat" ,{selectedChat} as never);

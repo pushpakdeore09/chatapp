@@ -6,6 +6,7 @@ import DrawerNavigator from '../component/drawer-navigation';
 import CreateGroupChatScreen from '../screens/create-group-chat-screen'; 
 import CreateNewGroupScreen from '../screens/create-new-group-screen';
 import Chat from '../screens/chat';
+import SignUpScreen from '../(auth)/sign-up';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +15,7 @@ const AppNavigator = () => {
     <Stack.Navigator initialRouteName="Onboarding" screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
       <Stack.Screen name="ChatScreen" component={DrawerNavigator} />
       <Stack.Screen name="CreateGroupChat" component={CreateGroupChatScreen} />
       <Stack.Screen name="CreateNewGroup" component={CreateNewGroupScreen} />

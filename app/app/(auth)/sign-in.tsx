@@ -16,10 +16,12 @@ import { UserRound } from "lucide-react-native";
 import apiClient from "../../api/apiClient"; 
 import Toast from 'react-native-toast-message';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
 
 const { height } = Dimensions.get("window");
 
 const SignInScreen = () => {
+  const router = useRouter();
   const navigation = useNavigation();
 
   const [email, setEmail] = React.useState("");
@@ -41,6 +43,8 @@ const SignInScreen = () => {
       if (response.status === 200) {
         setEmail("");
         setPassword("");
+        
+        
         await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
         await AsyncStorage.setItem("token", response.data.token);
         
@@ -130,7 +134,7 @@ const SignInScreen = () => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => navigation.navigate("SignUp" as never)}
+                onPress={() => router.push("/(auth)/sign-up")}
                 className="mt-6"
               >
                 <Text className="text-center text-sm text-gray-500">

@@ -15,9 +15,11 @@ import { useNavigation } from "@react-navigation/native";
 import { UserRound } from "lucide-react-native";
 import apiClient  from "../../api/apiClient"; 
 import Toast from 'react-native-toast-message';
+import { useRouter } from "expo-router";
 const { height } = Dimensions.get("window");
 
 const SignUpScreen = () => {
+  const router = useRouter()
   const navigation = useNavigation();
 
   const [firstName, setFirstName] = useState("");
@@ -132,7 +134,7 @@ const SignUpScreen = () => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => navigation.navigate("SignIn" as never)}
+                onPress={() => router.push("/(auth)/sign-in")}
               >
                 <Text className="text-center text-sm text-gray-500">
                   Already have an account?{" "}

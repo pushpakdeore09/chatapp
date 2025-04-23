@@ -7,6 +7,7 @@ export default interface Chat {
     isGroupChat: boolean;
     users: User[];
     latestMessage: Message;
+    messages: Message[]
     groupAdmin: User;
     createdAt: string;
     updatedAt: string;
